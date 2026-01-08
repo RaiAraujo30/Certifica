@@ -109,6 +109,20 @@
 
 }
 
+/* remove foco azul do Bootstrap */
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: inherit;
+}
+
+.btn:focus,
+.btn:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+
 /* li{
     margin-left: 15px;
 } */
