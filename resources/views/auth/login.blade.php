@@ -2,6 +2,8 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/home/homepage.css">
+
+
 @endsection
 
 @section('content')
@@ -33,13 +35,31 @@
                 autofocus
             id="">
 
-            <input
-                class="input-home-form"
-                type="password"
-                name="password"
-                placeholder="Digite sua senha"
-                autofocus
-            id="">
+            <div class="form-group py-1">
+                <label for="password" class="form-label">Senha</label>
+
+                <div class="input-group">
+                    <input
+                            id="password"
+                            type="password"
+                            class="form-control"
+                            name="password"
+                            required
+                            autocomplete="current-password"
+                    >
+
+                    <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            id="togglePassword"
+                            tabindex="-1"
+                    >
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+
 
             <div>
                 <button class="button-homepage" type="submit">Entrar</button>
@@ -59,6 +79,33 @@
     </section>
     </html>
 
+    @section('javascript')
+        <script>
+            if (!window.__togglePasswordInitialized) {
+                window.__togglePasswordInitialized = true;
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const togglePassword = document.getElementById("togglePassword");
+                    const password = document.getElementById("password");
+                    const eyeIcon = document.getElementById("eyeIcon");
+
+                    if (!togglePassword || !password || !eyeIcon) return;
+
+                    togglePassword.addEventListener("click", function () {
+                        const type =
+                            password.getAttribute("type") === "password"
+                                ? "text"
+                                : "password";
+
+                        password.setAttribute("type", type);
+
+                        eyeIcon.classList.toggle("bi-eye");
+                        eyeIcon.classList.toggle("bi-eye-slash");
+                    });
+                });
+            }
+        </script>
+    @endsection
 
 
 @endsection
