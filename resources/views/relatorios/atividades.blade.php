@@ -20,12 +20,21 @@
         <form action="" id="form" class="container">
         @csrf
         <div>
-        <div class="col-1">
-            <a type="button" class="button d-flex align-items-center justify-content-around between"
-               href="{{ route('relatorios.index') }}">
-                Voltar
-                <img src="/images/acoes/listView/voltar.svg" alt="">
-            </a>
+        <div class="d-flex mb-3" style="gap: 12px;">
+            <div>
+                <a type="button" class="button button-icon-spacing d-flex align-items-center justify-content-around between"
+                   href="{{ route('relatorios.index') }}">
+                    Voltar
+                    <img src="/images/acoes/listView/voltar.svg" alt="">
+                </a>
+            </div>
+            <div>
+                <a id="export-atividades" type="button" class="button button-icon-spacing d-flex align-items-center justify-content-around between"
+                   href="{{ route('relatorios.export_atividades', ['acao_id' => $acao->id]) }}">
+                    Baixar planilha
+                    <img class="action-icon" src="/images/acoes/listView/export.svg" alt="">
+                </a>
+            </div>
         </div>
             <div class="row head-table search-box d-flex align-items-center justify-content-center">
                 <div class="col-4 d-flex flex-column align-items-start justify-content-center">
@@ -98,6 +107,7 @@
 <script>
     $(document).ready(function() {
         filtro();
+        updateExportLink();
     });
 
     $(document).bind('keyup', '.form', function(e) {
@@ -114,6 +124,7 @@
 
     function filtro() {
         var dados = $('#form').serialize();
+        updateExportLink();
         console.log(dados)
         $.ajax({
             url: "{{ route('relatorios.atividades_filtro', ['acao_id'=>$acao->id]) }}",
@@ -123,6 +134,12 @@
             console.log(data)
             $(".list").html(data);
         });
+    }
+
+    function updateExportLink() {
+        var dados = $('#form').serialize();
+        var baseUrl = "{{ route('relatorios.export_atividades', ['acao_id' => $acao->id]) }}";
+        $('#export-atividades').attr('href', dados ? baseUrl + '?' + dados : baseUrl);
     }
 </script>
 

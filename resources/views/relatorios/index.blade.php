@@ -6,14 +6,6 @@
 
 @section('css')
     <link rel="stylesheet" href="/css/acoes/list.css">
-
-    <style>
-        .loading-message {
-            text-align: center;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -30,12 +22,21 @@
         <form id="form" class="container">
             @csrf
             <div>
-                <div class="col-1">
-                    <a type="button" class="button d-flex align-items-center justify-content-around between"
-                        href="{{ route('home') }}">
-                        Voltar
-                        <img src="/images/acoes/listView/voltar.svg" alt="">
-                    </a>
+                <div class="d-flex flex-wrap align-items-center mb-3" style="gap: 12px;">
+                    <div>
+                        <a type="button" class="button button-icon-spacing d-flex align-items-center justify-content-around between"
+                            href="{{ route('home') }}">
+                            Voltar
+                            <img src="/images/acoes/listView/voltar.svg" alt="">
+                        </a>
+                    </div>
+                    <div>
+                        <a id="export-acoes" type="button" class="button button-icon-spacing d-flex align-items-center justify-content-around between ml-1"
+                            href="{{ route('relatorios.export_acoes') }}">
+                            Baixar planilha
+                            <img class="action-icon" src="/images/acoes/listView/export.svg" alt="">
+                        </a>
+                    </div>
                 </div>
 
                 <div class="row head-table search-box d-flex align-items-center justify-content-center">
@@ -116,8 +117,13 @@
 
     $(document).on('change', '#form :input', filtro);
 
+    $(document).ready(function() {
+        updateExportLink();
+    });
+
     function filtro() {
         var dados = $('#form').serialize();
+        updateExportLink();
 
         $(".list").html('<p class="loading-message">Carregando...</p>'); // Exibe um indicador de carregamento
 
@@ -135,5 +141,11 @@
             .fail(function() {
                 $(".list").html('<p class="loading-message">Erro ao carregar os dados.</p>');
             });
+    }
+
+    function updateExportLink() {
+        var dados = $('#form').serialize();
+        var baseUrl = "{{ route('relatorios.export_acoes') }}";
+        $('#export-acoes').attr('href', dados ? baseUrl + '?' + dados : baseUrl);
     }
 </script>
